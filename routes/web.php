@@ -10,7 +10,13 @@ use App\Http\Controllers\Admin\LoeExportController;
 use App\Models\MonthlyLoeReport;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+
+    return redirect()->route('filament.employee.auth.login');
+})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

@@ -5,6 +5,8 @@ namespace App\Notifications\Loe;
 use App\Filament\Resources\MonthlyLoeReports\MonthlyLoeReportResource;
 use App\Models\MonthlyLoeReport;
 use Carbon\CarbonImmutable;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -41,9 +43,33 @@ class AdminLoeReportSubmittedNotification extends Notification implements Should
         return (new MailMessage)
             ->subject("LoE report submitted by {$employeeName}")
             ->line("{$employeeName} submitted a LoE report for {$periodLabel}.")
-            ->line('Total allocation: ' . number_format((float) $this->report->total_percentage, 2) . '%.')
+            ->line('Total allocation: '.number_format((float) $this->report->total_percentage, 2).'%.')
             ->action('Review reports', MonthlyLoeReportResource::getUrl('index'))
             ->line('You are receiving this because you are an administrator.');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toDatabase(object $notifiable): array
+    {
+        $employeeName = $this->report->user->name;
+        $periodLabel = CarbonImmutable::create($this->report->report_year, $this->report->report_month, 1)->format('F Y');
+
+        return FilamentNotification::make()
+            ->title("LoE report submitted by {$employeeName}")
+            ->success()
+            ->body("{$employeeName} submitted a report for {$periodLabel}.")
+            ->actions([
+                Action::make('reviewReports')
+                    ->button()
+                    ->markAsRead()
+                    ->url(MonthlyLoeReportResource::getUrl('index')),
+            ])
+            ->getDatabaseMessage() + [
+                'period' => $periodLabel,
+                'report_id' => $this->report->id,
+            ];
     }
 
     /**

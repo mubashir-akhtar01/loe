@@ -5,6 +5,8 @@ namespace App\Notifications\Loe;
 use App\Filament\Resources\MonthlyLoeReports\MonthlyLoeReportResource;
 use App\Models\MonthlyLoeReport;
 use Carbon\CarbonImmutable;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -38,9 +40,9 @@ class AdminLoeReportAlertNotification extends Notification implements ShouldQueu
         $periodLabel = CarbonImmutable::create($this->report->report_year, $this->report->report_month, 1)->format('F Y');
 
         $message = (new MailMessage)
-            ->subject("LoE alert for {$employeeName}")
+            ->subject("LOE alert for {$employeeName}")
             ->line("The {$periodLabel} LoE report for {$employeeName} needs attention.")
-            ->line('Total allocation: ' . number_format((float) $this->report->total_percentage, 2) . '%.');
+            ->line('Total allocation: '.number_format((float) $this->report->total_percentage, 2).'%.');
 
         foreach ($this->alerts as $alert) {
             $message->line("- {$alert}");
@@ -49,6 +51,30 @@ class AdminLoeReportAlertNotification extends Notification implements ShouldQueu
         return $message
             ->action('Review report', MonthlyLoeReportResource::getUrl('index'))
             ->line('You are receiving this because you are an administrator.');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toDatabase(object $notifiable): array
+    {
+        $employeeName = $this->report->user->name;
+        $periodLabel = CarbonImmutable::create($this->report->report_year, $this->report->report_month, 1)->format('F Y');
+
+        return FilamentNotification::make()
+            ->title("LOE alert for {$employeeName}")
+            ->warning()
+            ->body(implode("\n", $this->alerts))
+            ->actions([
+                Action::make('reviewReport')
+                    ->button()
+                    ->markAsRead()
+                    ->url(MonthlyLoeReportResource::getUrl('index')),
+            ])
+            ->getDatabaseMessage() + [
+                'period' => $periodLabel,
+                'report_id' => $this->report->id,
+            ];
     }
 
     /**

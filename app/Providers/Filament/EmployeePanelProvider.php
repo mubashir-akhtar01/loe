@@ -25,8 +25,10 @@ class EmployeePanelProvider extends PanelProvider
             ->id('employee')
             ->path('employee')
             ->login()
+            ->passwordReset()
+            ->databaseNotifications()
             ->profile()
-            ->brandName('LOE Hub')
+            ->brandName('LOE HUB')
             ->viteTheme('resources/css/filament/employee/theme.css')
             ->colors([
                 'primary' => Color::Amber,

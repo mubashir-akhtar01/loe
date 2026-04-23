@@ -2,6 +2,9 @@
 
 namespace App\Notifications\Loe;
 
+use App\Filament\Employee\Pages\MyReport;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -33,11 +36,31 @@ class EmployeeLoeReminderNotification extends Notification implements ShouldQueu
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("LoE reminder for {$this->periodLabel}")
+            ->subject("LOE reminder for {$this->periodLabel}")
             ->line("Please submit your Level of Effort report for {$this->periodLabel}.")
             ->line('This reminder is only sent because your report has not been submitted yet.')
             ->action('Open my LoE report', route('loe.report'))
             ->line('Once you submit the report, these reminder notifications will stop.');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toDatabase(object $notifiable): array
+    {
+        return FilamentNotification::make()
+            ->title("LOE reminder for {$this->periodLabel}")
+            ->warning()
+            ->body("Please submit your Level of Effort report for {$this->periodLabel}.")
+            ->actions([
+                Action::make('openReport')
+                    ->button()
+                    ->markAsRead()
+                    ->url(MyReport::getUrl(panel: 'employee')),
+            ])
+            ->getDatabaseMessage() + [
+                'period' => $this->periodLabel,
+            ];
     }
 
     /**
@@ -50,7 +73,7 @@ class EmployeeLoeReminderNotification extends Notification implements ShouldQueu
         return [
             'kind' => 'monthly_loe_reminder',
             'period' => $this->periodLabel,
-            'message' => "Submit your LoE report for {$this->periodLabel}.",
+            'message' => "Submit your LOE report for {$this->periodLabel}.",
         ];
     }
 }

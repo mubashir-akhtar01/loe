@@ -2,6 +2,9 @@
 
 namespace App\Notifications\Loe;
 
+use App\Filament\Employee\Pages\MyReport;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -33,11 +36,31 @@ class EmployeeLoeOverdueReminderNotification extends Notification implements Sho
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Overdue LoE report for {$this->periodLabel}")
+            ->subject("Overdue LOE report for {$this->periodLabel}")
             ->line("Your Level of Effort report for {$this->periodLabel} is overdue.")
             ->line('The reporting grace period is still open, so please submit it before the month is closed.')
             ->action('Open my LoE report', route('loe.report'))
             ->line('Admins can manually close the month before the grace period ends.');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toDatabase(object $notifiable): array
+    {
+        return FilamentNotification::make()
+            ->title("Overdue LOE report for {$this->periodLabel}")
+            ->danger()
+            ->body("Your Level of Effort report for {$this->periodLabel} is overdue.")
+            ->actions([
+                Action::make('openReport')
+                    ->button()
+                    ->markAsRead()
+                    ->url(MyReport::getUrl(panel: 'employee')),
+            ])
+            ->getDatabaseMessage() + [
+                'period' => $this->periodLabel,
+            ];
     }
 
     /**
