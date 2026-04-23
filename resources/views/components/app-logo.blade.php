@@ -4,7 +4,7 @@
 
 @php
     $brandName = config('app.name') === 'Laravel'
-        ? 'LOE Hub'
+        ? 'LOE HUB'
         : config('app.name');
 @endphp
 

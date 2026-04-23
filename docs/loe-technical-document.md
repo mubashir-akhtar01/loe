@@ -1,8 +1,8 @@
-# LOE Hub Technical Document
+# LOE HUB Technical Document
 
 ## 1. Product Summary
 
-LOE Hub is a two-panel Laravel application for monthly Level of Effort tracking.
+LOE HUB is a two-panel Laravel application for monthly Level of Effort tracking.
 
 - `Admin panel`: built with Filament and focused on workforce setup, reporting, analytics, closures, and exports.
 - `Employee panel`: built with Filament employee pages for self-service reporting, history, and personal analytics.
