@@ -129,7 +129,7 @@
                         </div>
                         <a
                             href="{{ \App\Filament\Employee\Pages\MyReport::getUrl(panel: 'employee') }}"
-                            class="inline-flex items-center justify-center rounded-xl bg-amber-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-amber-400"
+                            class="inline-flex w-full items-center justify-center rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-amber-400 md:w-auto md:self-start"
                         >
                             {{ $this->primaryActionLabel() }}
                         </a>
