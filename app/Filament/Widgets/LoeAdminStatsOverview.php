@@ -2,6 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Pages\OpenCapacityPage;
+use App\Filament\Pages\OverallocatedEmployeesPage;
+use App\Filament\Pages\PendingEmployeesPage;
+use App\Filament\Pages\SubmittedReportsPage;
 use App\Models\MonthlyLoeReport;
 use App\Models\User;
 use App\MonthlyLoeReportStatus;
@@ -49,24 +53,32 @@ class LoeAdminStatsOverview extends StatsOverviewWidget
         $pendingCount = max($activeEmployees - $submittedCount, 0);
         $overallocatedCount = $reports->filter(fn (MonthlyLoeReport $report): bool => (float) $report->total_percentage > 100)->count();
         $availableCapacity = $reports->sum(fn (MonthlyLoeReport $report): float => (float) $report->open_to_new_projects_percentage);
+        $scopeParameters = array_filter([
+            'department_id' => $departmentId,
+            'report_month' => $today->month,
+            'report_year' => $today->year,
+        ], fn (mixed $value): bool => $value !== null);
 
         return [
             Stat::make('Submitted reports', (string) $submittedCount)
                 ->description($today->format('F Y'))
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->chart([$submittedCount, max($submittedCount - 1, 0), $submittedCount, $submittedCount + 1])
-                ->color('success'),
+                ->color('success')
+                ->extraAttributes($this->linkAttributes(SubmittedReportsPage::getUrl($scopeParameters))),
             Stat::make('Pending employees', (string) $pendingCount)
                 ->description('Still need to submit')
                 ->descriptionIcon('heroicon-m-clock')
                 ->chart([$pendingCount + 2, $pendingCount + 1, $pendingCount, $pendingCount])
-                ->color($pendingCount > 0 ? 'warning' : 'success'),
+                ->color($pendingCount > 0 ? 'warning' : 'success')
+                ->extraAttributes($this->linkAttributes(PendingEmployeesPage::getUrl($scopeParameters))),
             Stat::make('Overallocated employees', (string) $overallocatedCount)
                 ->description('Above 100% total allocation')
                 ->descriptionIcon('heroicon-m-exclamation-triangle')
                 ->chart([max($overallocatedCount - 1, 0), $overallocatedCount, $overallocatedCount, $overallocatedCount + 1])
-                ->color($overallocatedCount > 0 ? 'danger' : 'success'),
-            Stat::make('Open capacity', number_format($availableCapacity, 2) . '%')
+                ->color($overallocatedCount > 0 ? 'danger' : 'success')
+                ->extraAttributes($this->linkAttributes(OverallocatedEmployeesPage::getUrl($scopeParameters))),
+            Stat::make('Open capacity', number_format($availableCapacity, 2).'%')
                 ->description('Across all current reports')
                 ->descriptionIcon('heroicon-m-chart-bar')
                 ->chart([
@@ -75,7 +87,20 @@ class LoeAdminStatsOverview extends StatsOverviewWidget
                     round($availableCapacity, 2),
                     round($availableCapacity + 5, 2),
                 ])
-                ->color('info'),
+                ->color('info')
+                ->extraAttributes($this->linkAttributes(OpenCapacityPage::getUrl($scopeParameters))),
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function linkAttributes(string $url): array
+    {
+        return [
+            'class' => 'cursor-pointer',
+            'onclick' => "window.location = '{$url}'",
+            'title' => 'Open detailed page',
         ];
     }
 }

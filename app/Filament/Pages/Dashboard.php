@@ -4,8 +4,8 @@ namespace App\Filament\Pages;
 
 use App\Models\Department;
 use Filament\Forms\Components\Select;
-use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Actions\FilterAction;
+use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 use Filament\Support\Enums\Width;
 
@@ -75,7 +75,7 @@ class Dashboard extends BaseDashboard
         $departmentName = Department::query()->find($this->filters['department_id'] ?? null)?->name;
 
         return $departmentName
-            ? "Live LoE reporting for {$month} {$year} · {$departmentName}"
-            : "Live LoE reporting for {$month} {$year} across the full organization";
+            ? "Live LOE reporting for {$month} {$year} · {$departmentName}"
+            : "Live LOE reporting for {$month} {$year} across the full organization";
     }
 }
