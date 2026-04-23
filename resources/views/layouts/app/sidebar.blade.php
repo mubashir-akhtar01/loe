@@ -10,28 +10,27 @@
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
 
-            <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
-                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+        <flux:sidebar.nav>
+            <flux:sidebar.group :heading="__('Platform')" class="grid">
+                <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                    {{ __('Dashboard') }}
+                </flux:sidebar.item>
+                    <flux:sidebar.item icon="clipboard-document-list" :href="route('loe.report')" :current="request()->routeIs('loe.report')" wire:navigate>
+                        {{ __('My LoE') }}
                     </flux:sidebar.item>
-                </flux:sidebar.group>
-            </flux:sidebar.nav>
-
-            <flux:spacer />
-
-            <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
+                    <flux:sidebar.item icon="chart-bar-square" :href="route('loe.analytics')" :current="request()->routeIs('loe.analytics')" wire:navigate>
+                        {{ __('My Analytics') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="clock" :href="route('loe.history')" :current="request()->routeIs('loe.history', 'loe.show')" wire:navigate>
+                        {{ __('LoE History') }}
                 </flux:sidebar.item>
+            </flux:sidebar.group>
+        </flux:sidebar.nav>
 
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
-                </flux:sidebar.item>
-            </flux:sidebar.nav>
+        <flux:spacer />
 
-            <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
-        </flux:sidebar>
+        <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
+    </flux:sidebar>
 
         <!-- Mobile User Menu -->
         <flux:header class="lg:hidden">
