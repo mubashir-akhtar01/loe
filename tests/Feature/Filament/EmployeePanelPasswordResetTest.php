@@ -1,7 +1,9 @@
 <?php
 
+use App\Filament\Employee\Pages\Dashboard;
 use App\Models\User;
 use Filament\Auth\Notifications\ResetPassword as FilamentResetPassword;
+use Filament\Auth\Pages\Login;
 use Filament\Auth\Pages\PasswordReset\RequestPasswordReset;
 use Filament\Auth\Pages\PasswordReset\ResetPassword;
 use Filament\Facades\Filament;
@@ -25,6 +27,22 @@ test('employee login screen shows a forgot password link', function () {
     $this->get(route('filament.employee.auth.login'))
         ->assertOk()
         ->assertSee(route('filament.employee.auth.password-reset.request'), escape: false);
+});
+
+test('employees can authenticate from the employee panel login page', function () {
+    $employee = User::factory()->create([
+        'password' => Hash::make('password'),
+    ]);
+
+    Livewire::test(Login::class)
+        ->set('data.email', $employee->email)
+        ->set('data.password', 'password')
+        ->set('data.remember', true)
+        ->call('authenticate')
+        ->assertRedirect(Dashboard::getUrl(panel: 'employee'));
+
+    expect(auth()->check())->toBeTrue()
+        ->and(auth()->id())->toBe($employee->id);
 });
 
 test('employee password reset request screen can be rendered', function () {

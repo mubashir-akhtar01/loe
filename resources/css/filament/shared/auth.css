@@ -1,0 +1,277 @@
+.fi-simple-layout {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at top left, rgba(245, 158, 11, 0.2), transparent 32%),
+        radial-gradient(circle at 85% 18%, rgba(14, 165, 233, 0.16), transparent 24%),
+        linear-gradient(180deg, #fffaf0 0%, #fff 42%, #f8fafc 100%) !important;
+}
+
+.dark .fi-simple-layout {
+    background:
+        radial-gradient(circle at top left, rgba(245, 158, 11, 0.14), transparent 30%),
+        radial-gradient(circle at 85% 18%, rgba(14, 165, 233, 0.12), transparent 22%),
+        linear-gradient(180deg, #0f172a 0%, #111827 44%, #020617 100%) !important;
+}
+
+.fi-simple-layout::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.3), transparent 38%),
+        radial-gradient(circle at 18% 24%, rgba(245, 158, 11, 0.2), transparent 16%),
+        radial-gradient(circle at 84% 14%, rgba(14, 165, 233, 0.2), transparent 18%);
+    pointer-events: none;
+}
+
+.dark .fi-simple-layout::before {
+    background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.04), transparent 38%),
+        radial-gradient(circle at 18% 24%, rgba(245, 158, 11, 0.14), transparent 16%),
+        radial-gradient(circle at 84% 14%, rgba(14, 165, 233, 0.14), transparent 18%);
+}
+
+.fi-simple-main-ctn {
+    position: relative;
+    z-index: 1;
+}
+
+.fi-simple-main {
+    border: 1px solid rgba(255, 255, 255, 0.64);
+    border-radius: 1.75rem;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 28px 80px rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(20px);
+}
+
+.dark .fi-simple-main {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(15, 23, 42, 0.8);
+    box-shadow: 0 30px 90px rgba(2, 6, 23, 0.5);
+}
+
+.fi-simple-header {
+    gap: 0.75rem;
+}
+
+.fi-simple-header-heading {
+    letter-spacing: -0.03em;
+}
+
+.fi-simple-header-subheading {
+    max-width: 32rem;
+    color: rgba(71, 85, 105, 0.92);
+}
+
+.dark .fi-simple-header-subheading {
+    color: rgba(203, 213, 225, 0.82);
+}
+
+.loe-auth-intro {
+    margin-bottom: 1rem;
+}
+
+.loe-auth-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.loe-auth-stage__orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(8px);
+    opacity: 0.95;
+}
+
+.loe-auth-stage__orb--one {
+    top: -7rem;
+    left: -6rem;
+    width: 28rem;
+    height: 28rem;
+}
+
+.loe-auth-stage__orb--two {
+    right: -9rem;
+    bottom: -10rem;
+    width: 34rem;
+    height: 34rem;
+    opacity: 0.72;
+}
+
+.loe-auth-stage__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    background-size: 2rem 2rem;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent 78%);
+}
+
+.dark .loe-auth-stage__grid {
+    background-image:
+        linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+}
+
+.loe-auth-stage__panel {
+    position: absolute;
+    left: 4.5rem;
+    bottom: 4rem;
+    max-width: 24rem;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.58);
+    padding: 1.2rem 1.35rem;
+    box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(16px);
+}
+
+.dark .loe-auth-stage__panel {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(15, 23, 42, 0.52);
+    box-shadow: 0 22px 70px rgba(2, 6, 23, 0.32);
+}
+
+.loe-auth-stage__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(180, 83, 9, 0.88);
+}
+
+.dark .loe-auth-stage__eyebrow {
+    color: rgba(253, 224, 71, 0.82);
+}
+
+.loe-auth-stage__title {
+    margin-top: 0.55rem;
+    font-size: 1.7rem;
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #0f172a;
+}
+
+.dark .loe-auth-stage__title {
+    color: #f8fafc;
+}
+
+.loe-auth-stage__caption {
+    margin-top: 0.65rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(51, 65, 85, 0.82);
+}
+
+.dark .loe-auth-stage__caption {
+    color: rgba(226, 232, 240, 0.78);
+}
+
+@media (max-width: 1024px) {
+    .loe-auth-stage__panel {
+        left: 1.25rem;
+        right: 1.25rem;
+        bottom: 1.25rem;
+        max-width: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .loe-auth-stage__panel {
+        display: none;
+    }
+}
+
+.loe-auth-intro__surface {
+    position: relative;
+    overflow: hidden;
+    border-width: 1px;
+    border-radius: 1.5rem;
+    padding: 1.15rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.loe-auth-intro__surface::after {
+    content: '';
+    position: absolute;
+    inset: auto -8% -42% auto;
+    width: 11rem;
+    height: 11rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.42);
+    filter: blur(18px);
+}
+
+.dark .loe-auth-intro__surface::after {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.loe-auth-intro__copy,
+.loe-auth-intro__highlights {
+    position: relative;
+    z-index: 1;
+}
+
+.loe-auth-intro__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+.loe-auth-intro__headline {
+    margin-top: 0.35rem;
+    font-size: 1.25rem;
+    line-height: 1.15;
+    font-weight: 700;
+}
+
+.loe-auth-intro__description {
+    margin-top: 0.45rem;
+    max-width: 34rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: rgba(51, 65, 85, 0.88);
+}
+
+.dark .loe-auth-intro__description {
+    color: rgba(226, 232, 240, 0.82);
+}
+
+.loe-auth-intro__highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.loe-auth-intro__highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(51, 65, 85, 0.92);
+}
+
+.dark .loe-auth-intro__highlight {
+    background: rgba(15, 23, 42, 0.45);
+    color: rgba(226, 232, 240, 0.88);
+}
+
+.loe-auth-intro__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #f59e0b, #0ea5e9);
+}

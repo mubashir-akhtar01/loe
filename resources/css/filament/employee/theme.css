@@ -1,4 +1,6 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
+@import '../shared/auth.css';
 
 @source '../../../../app/Filament/Employee/**/*';
+@source '../../../../resources/views/filament/auth/**/*';
 @source '../../../../resources/views/filament/employee/**/*';

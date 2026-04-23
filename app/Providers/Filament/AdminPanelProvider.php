@@ -14,6 +14,8 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -30,8 +32,47 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->passwordReset()
             ->databaseNotifications()
             ->viteTheme('resources/css/filament/admin/theme.css')
+            ->renderHook(
+                PanelsRenderHook::SIMPLE_LAYOUT_START,
+                fn (): View => view('filament.auth.background', [
+                    'eyebrow' => 'Admin access',
+                    'panelLabel' => 'Admin panel',
+                    'tone' => 'admin',
+                ]),
+            )
+            ->renderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
+                fn (): View => view('filament.auth.panel-intro', [
+                    'eyebrow' => 'Admin access',
+                    'headline' => 'Step into the command center',
+                    'highlights' => ['Review submissions fast', 'Spot staffing pressure early'],
+                    'panelLabel' => 'Admin panel',
+                    'tone' => 'admin',
+                ]),
+            )
+            ->renderHook(
+                PanelsRenderHook::AUTH_PASSWORD_RESET_REQUEST_FORM_BEFORE,
+                fn (): View => view('filament.auth.panel-intro', [
+                    'eyebrow' => 'Admin recovery',
+                    'headline' => 'Get back to the command center',
+                    'highlights' => ['Restore access securely', 'Return to approvals without friction'],
+                    'panelLabel' => 'Admin panel',
+                    'tone' => 'admin',
+                ]),
+            )
+            ->renderHook(
+                PanelsRenderHook::AUTH_PASSWORD_RESET_RESET_FORM_BEFORE,
+                fn (): View => view('filament.auth.panel-intro', [
+                    'eyebrow' => 'Admin recovery',
+                    'headline' => 'Create a fresh admin password',
+                    'highlights' => ['Protect the panel', 'Continue staffing work with confidence'],
+                    'panelLabel' => 'Admin panel',
+                    'tone' => 'admin',
+                ]),
+            )
             ->colors([
                 'primary' => Color::Amber,
             ])
